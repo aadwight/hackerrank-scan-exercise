@@ -13,5 +13,5 @@ public interface ScanService {
 
   void deleteById(Long id);
 
-    List<Scan> findByDomainName(String domainName, Long numPages);
+    List<Scan> findByDomainName(String domainName, String orderBy);
 }

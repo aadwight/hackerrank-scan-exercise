@@ -48,8 +48,8 @@ public class ScanController {
     }
 
     @GetMapping(path = "/search/{domainName}")
-    public List<Scan> findScans(@PathVariable("domainName") String domainName, @RequestParam(name = "orderBy") Long numPages) {
-        return scanService.findByDomainName(domainName, numPages);
+    public List<Scan> findScans(@PathVariable("domainName") String domainName, @RequestParam(name = "orderBy") String orderBy) {
+        return scanService.findByDomainName(domainName, orderBy);
     }
 
 }
