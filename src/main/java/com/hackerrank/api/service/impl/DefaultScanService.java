@@ -44,4 +44,9 @@ public class DefaultScanService implements ScanService {
   public void deleteById(Long id) {
 
   }
+
+    @Override
+    public List<Scan> findByDomainName(String domainName, Long numPages) {
+      return null;
+    }
 }

@@ -1,0 +1,5 @@
+
+Notes from test taker:
+
+- Had an issue with my local IDE running the application, so I had to run everything from the command line.
+  That's what took a bunch of time in the beginning.
