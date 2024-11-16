@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/scan")
@@ -33,11 +34,16 @@ public class ScanController {
 
     @GetMapping(path = "/{id}")
     public Scan findScan(@PathVariable("id") Long id) {
-        return scanService.getScanById(id);
+        Scan s = scanService.getScanById(id);
+        if(s.isDeleted()){
+            throw new NoSuchElementException();
+        }
+        return s;
     }
 
     @DeleteMapping(path = "/{id}")
     public void deleteScan(@PathVariable("id") Long id) {
+        findScan(id); // Check to see if this record has already been deleted
         scanService.deleteById(id);
     }
 

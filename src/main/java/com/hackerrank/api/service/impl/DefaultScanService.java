@@ -37,12 +37,15 @@ public class DefaultScanService implements ScanService {
 
   @Override
   public Scan getScanById(Long id) {
-    return null;
+    return scanRepository.findById(id).get();
   }
 
   @Override
   public void deleteById(Long id) {
-
+    Scan s = scanRepository.findById(id).get();
+    s.setDeleted(true);
+    // saveAndFlush might be overkill here, depending on whether we care more about consistency or efficiency
+    scanRepository.saveAndFlush(s);
   }
 
     @Override
