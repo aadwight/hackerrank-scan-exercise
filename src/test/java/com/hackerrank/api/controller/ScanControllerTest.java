@@ -40,6 +40,46 @@ class ScanControllerTest {
             .andExpect(jsonPath("$.id", greaterThan(0)))
             .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString(), Scan.class);
 
-      Assertions.assertEquals(expectedRecord.getDomainName(), actualRecord.getDomainName());
+    Assertions.assertEquals(expectedRecord.getDomainName(), actualRecord.getDomainName());
+  }
+
+  //  @Test
+  public void testGetById() throws Exception {
+    // todo: implement
+  }
+
+  //  @Test
+  public void testGetByIdNotFound() throws Exception {
+    // todo: implement
+  }
+
+  //  @Test
+  public void testDelete() throws Exception {
+    // todo: implement
+  }
+
+  //  @Test
+  public void testDeleteNotFound() throws Exception {
+    // todo: implement
+  }
+
+  //  @Test
+  public void testDeleteTwice() throws Exception {
+    // todo: implement
+  }
+
+  //  @Test
+  public void testDeleteAndFind() throws Exception {
+    // todo: implement
+  }
+
+  //  @Test
+  public void testScan() throws Exception {
+    // todo: implement
+  }
+
+  //  @Test
+  public void testScanBadRequest() throws Exception {
+    // todo: implement
   }
 }
