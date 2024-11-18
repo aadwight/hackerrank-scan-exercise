@@ -7,11 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ScanRepository extends JpaRepository<Scan, Long> {
-
     List<Scan> findByDomainName(String domainName, Sort sort);
-
-    List<Scan> findByDomainNameOrderByDomainNameAsc(String domainName);
-    List<Scan> findByDomainNameOrderByNumPagesAsc(String domainName);
-    List<Scan> findByDomainNameOrderByNumBrokenLinksAsc(String domainName);
-    List<Scan> findByDomainNameOrderByNumMissingImagesAsc(String domainName);
 }

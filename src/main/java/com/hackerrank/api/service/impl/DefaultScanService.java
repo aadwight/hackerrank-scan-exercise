@@ -6,6 +6,7 @@ import com.hackerrank.api.repository.ScanRepository;
 import com.hackerrank.api.service.ScanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,26 +52,10 @@ public class DefaultScanService implements ScanService {
 
     @Override
     public List<Scan> findByDomainName(String domainName, String orderBy) {
-
-    // This is extremely ugly.  The better solution is something like...
-    //
-    //   scanRepository.findByDomainName(domainName, Sort.by(orderBy));
-    //
-    // For whatever reason, the line above doesn't work right out of the box.
-    // I've run out of time to properly debug it, so instead
-    // here is a working solution that is hardcoded to the specified data model.
-
-      System.out.println("searching for domainName " + domainName + " order by " + orderBy);
-      if ("domain_name".equals(orderBy)) {
-        return scanRepository.findByDomainNameOrderByDomainNameAsc(domainName);
-      } else if ("num_pages".equals(orderBy)) {
-        return scanRepository.findByDomainNameOrderByNumPagesAsc(domainName);
-      } else if ("num_broken_links".equals(orderBy)) {
-        return scanRepository.findByDomainNameOrderByNumBrokenLinksAsc(domainName);
-      } else if ("num_missing_images".equals(orderBy)) {
-        return scanRepository.findByDomainNameOrderByNumMissingImagesAsc(domainName);
-      } else {
-        throw new BadRequestException(String.format("Unknown order parameter: %s", orderBy));
+    try {
+        return scanRepository.findByDomainName(domainName, Sort.by(orderBy));
+      } catch (PropertyReferenceException e) {
+        throw new BadRequestException("Cannot sort by \"" + orderBy + "\".  Note: property names are camelCase, not snake_case.");
       }
     }
 }
