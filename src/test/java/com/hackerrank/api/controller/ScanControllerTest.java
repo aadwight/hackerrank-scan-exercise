@@ -12,9 +12,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,43 +47,65 @@ class ScanControllerTest {
     Assertions.assertEquals(expectedRecord.getDomainName(), actualRecord.getDomainName());
   }
 
-  //  @Test
+  @Test
   public void testGetById() throws Exception {
-    // todo: implement
+      mockMvc.perform(get("/scan/{id}", 1))
+              .andDo(print())
+              .andExpect(status().isOk())
+              .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1));
   }
 
-  //  @Test
+  @Test
   public void testGetByIdNotFound() throws Exception {
-    // todo: implement
+    mockMvc.perform(get("/scan/{id}", 10))
+            .andExpect(status().isNotFound());
   }
 
-  //  @Test
+  @Test
   public void testDelete() throws Exception {
-    // todo: implement
+    mockMvc.perform(delete("/scan/{id}", 1))
+            .andExpect(status().isOk());
   }
 
-  //  @Test
+  @Test
   public void testDeleteNotFound() throws Exception {
-    // todo: implement
+    mockMvc.perform(delete("/scan/{id}", 10))
+            .andExpect(status().isNotFound());
   }
 
-  //  @Test
+  @Test
   public void testDeleteTwice() throws Exception {
-    // todo: implement
+    mockMvc.perform(delete("/scan/{id}", 1))
+            .andExpect(status().isOk());
+    mockMvc.perform(delete("/scan/{id}", 1))
+            .andExpect(status().isNotFound());
   }
 
-  //  @Test
+  @Test
   public void testDeleteAndFind() throws Exception {
-    // todo: implement
+    mockMvc.perform(get("/scan/{id}", 1))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1));
+    mockMvc.perform(delete("/scan/{id}", 1))
+            .andExpect(status().isOk());
+    mockMvc.perform(get("/scan/{id}", 10))
+            .andExpect(status().isNotFound());
   }
 
-  //  @Test
-  public void testScan() throws Exception {
-    // todo: implement
+  @Test
+  public void testSearch() throws Exception {
+    mockMvc.perform(get("/scan/search/{domain}", "domain1.com").param("orderBy", "numMissingImages"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$[0].numMissingImages").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[1].numMissingImages").value(2));
   }
 
-  //  @Test
-  public void testScanBadRequest() throws Exception {
-    // todo: implement
+  @Test
+  public void testSearchBadRequest() throws Exception {
+    mockMvc.perform(get("/scan/search/{domain}", "domain1.com").param("orderBy", "kitten"))
+            .andDo(print())
+            .andExpect(status().isBadRequest());
   }
 }
